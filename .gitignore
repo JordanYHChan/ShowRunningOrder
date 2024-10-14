@@ -1,0 +1,21 @@
+# Output folder
+
+output/
+
+# Data folder
+
+data/
+
+# Python
+
+*__pycache__*
+*.pyc
+
+# VSCode
+
+.vscode/*
+
+# Jupiter Notebook
+
+*.ipynb
+.ipynb_checkpoints/
