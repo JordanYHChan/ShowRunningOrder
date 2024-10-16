@@ -50,6 +50,13 @@ def test_Show_is_possible():
     assert show.is_possible(2, show[0]) is False
     assert show.is_possible(0, show[1]) is False
     assert show.is_possible(0, show[2]) is False
+    show.running_order_indices = [-1, 0, -1]
+    assert show.is_possible(0, show[0]) is False
+    assert show.is_possible(1, show[0]) is True
+    assert show.is_possible(2, show[0]) is False
+    assert show.is_possible(0, show[1]) is True
+    assert show.is_possible(0, show[2]) is True
+    show.running_order_indices = [0, -1, -1]
     show.calculate_costs()
     assert show.is_possible(0, show[0]) is True
     show.running_order_indices = [-1, -1, -1]

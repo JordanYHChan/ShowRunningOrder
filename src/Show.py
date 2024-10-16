@@ -40,11 +40,11 @@ class Show:
             [0] * self.number_of_dances for _ in range(self.number_of_dances)
         ]
 
-    def is_possible(self, i, dance):
+    def is_possible(self, pos, dance):
         dance_to_check_index = self.dances.index(dance)
-        if dance_to_check_index == i:
+        if dance_to_check_index == self.running_order_indices[pos]:
             return True
-        if self.running_order_indices[i] != -1:
+        if self.running_order_indices[pos] != -1:
             return False
         if dance_to_check_index in self.running_order_indices:
             return False
