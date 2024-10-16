@@ -7,3 +7,5 @@ def test_Dance():
     assert dance[0] == "Alice"
     assert len(dance) == 3
     assert [dancer for dancer in dance] == ["Alice", "Bob", "Charlie"]
+    assert dance.dancers == ["Alice", "Bob", "Charlie"]
+    assert dance.dancers_set == set(["Alice", "Bob", "Charlie"])
