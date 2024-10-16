@@ -11,7 +11,8 @@ def read(input_file):
 class Dance:
     def __init__(self, name, dancers):
         self.name = name
-        self.dancers = dancers
+        self.dancers = sorted(dancers)
+        self.dancers_set = set(self.dancers)
 
     def __str__(self):
         return f"{self.name}: {', '.join(self.dancers)}"
@@ -32,6 +33,33 @@ class Show:
             Dance(dance_name, dancers)
             for dance_name, dancers in zip(dance_names, dancers_per_dance)
         ]
+        self.dances.sort(key=lambda dance: dance.name)
+        self.number_of_dances = len(dance_names)
+        self.running_order_indices = [-1] * self.number_of_dances
+        self.cost_matrix = [
+            [0] * self.number_of_dances for _ in range(self.number_of_dances)
+        ]
+
+    def is_possible(self, pos, dance):
+        dance_to_check_index = self.dances.index(dance)
+        if dance_to_check_index == self.running_order_indices[pos]:
+            return True
+        if self.running_order_indices[pos] != -1:
+            return False
+        if dance_to_check_index in self.running_order_indices:
+            return False
+        return True
+
+    def calculate_costs(self):
+        for i in range(self.number_of_dances):
+            for j in range(self.number_of_dances):
+                if i == j:
+                    self.cost_matrix[i][j] = 1_000_000
+                    continue
+                self.cost_matrix[i][j] = len(
+                    self.dances[i].dancers_set & self.dances[j].dancers_set
+                )
+        pass
 
     def __str__(self):
         return "\n".join([str(dance) for dance in self.dances])
