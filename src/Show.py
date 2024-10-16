@@ -33,6 +33,7 @@ class Show:
             Dance(dance_name, dancers)
             for dance_name, dancers in zip(dance_names, dancers_per_dance)
         ]
+        self.dances.sort(key=lambda dance: dance.name)
         self.number_of_dances = len(dance_names)
         self.running_order_indices = [-1] * self.number_of_dances
         self.cost_matrix = [
@@ -40,7 +41,12 @@ class Show:
         ]
 
     def is_possible(self, i, dance):
-        if self.dances.index(dance) in self.running_order_indices:
+        dance_to_check_index = self.dances.index(dance)
+        if dance_to_check_index == i:
+            return True
+        if self.running_order_indices[i] != -1:
+            return False
+        if dance_to_check_index in self.running_order_indices:
             return False
         return True
 
