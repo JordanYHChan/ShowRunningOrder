@@ -89,7 +89,36 @@ def test_Show_is_possible():
     assert show.is_possible(2, show["Ballet"]) is True
     assert show.is_possible(0, show["Contemporary"]) is True
     assert show.is_possible(0, show["Jazz"]) is True
-    show.running_order = [None, None, None]
+    show.running_order = ["Ballet", None, None]
     show.calc_cost_matrix()
     assert show.is_possible(0, show["Ballet"]) is True
+    assert show.is_possible(1, show["Ballet"]) is False
+    assert show.is_possible(2, show["Ballet"]) is False
+    assert show.is_possible(0, show["Contemporary"]) is True
+    assert show.is_possible(1, show["Contemporary"]) is True
+    assert show.is_possible(2, show["Contemporary"]) is True
+    assert show.is_possible(0, show["Jazz"]) is True
+    assert show.is_possible(1, show["Jazz"]) is False
+    assert show.is_possible(2, show["Jazz"]) is True
+    show.running_order = [None, "Ballet", None]
+    assert show.is_possible(0, show["Ballet"]) is False
+    assert show.is_possible(1, show["Ballet"]) is True
+    assert show.is_possible(2, show["Ballet"]) is False
+    assert show.is_possible(0, show["Contemporary"]) is True
+    assert show.is_possible(1, show["Contemporary"]) is True
+    assert show.is_possible(2, show["Contemporary"]) is True
+    assert show.is_possible(0, show["Jazz"]) is False
+    assert show.is_possible(1, show["Jazz"]) is True
+    assert show.is_possible(2, show["Jazz"]) is False
+    show.running_order = [None, None, "Ballet"]
+    assert show.is_possible(0, show["Ballet"]) is False
+    assert show.is_possible(1, show["Ballet"]) is False
+    assert show.is_possible(2, show["Ballet"]) is True
+    assert show.is_possible(0, show["Contemporary"]) is True
+    assert show.is_possible(1, show["Contemporary"]) is True
+    assert show.is_possible(2, show["Contemporary"]) is True
+    assert show.is_possible(0, show["Jazz"]) is True
+    assert show.is_possible(1, show["Jazz"]) is False
+    assert show.is_possible(2, show["Jazz"]) is True
+    show.running_order = [None, None, None]
     show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
