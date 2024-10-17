@@ -9,3 +9,4 @@ def test_Dance():
     assert [dancer for dancer in dance] == ["Alice", "Bob", "Charlie"]
     assert dance.dancers == ["Alice", "Bob", "Charlie"]
     assert dance.dancers_set == set(["Alice", "Bob", "Charlie"])
+    assert dance.name == "Jazz"

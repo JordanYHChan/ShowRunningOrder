@@ -35,37 +35,38 @@ class Show:
         ]
         self.dances.sort(key=lambda dance: dance.name)
         self.number_of_dances = len(dance_names)
-        self.running_order_indices = [-1] * self.number_of_dances
+        self.running_order = [None] * self.number_of_dances
         self.cost_matrix = [
             [0] * self.number_of_dances for _ in range(self.number_of_dances)
         ]
 
     def is_possible(self, pos, dance):
-        dance_to_check_index = self.dances.index(dance)
-        if dance_to_check_index == self.running_order_indices[pos]:
-            return True
-        if self.running_order_indices[pos] != -1:
-            return False
-        if dance_to_check_index in self.running_order_indices:
+        if dance.name in self.running_order[:pos] + self.running_order[pos + 1 :]:
             return False
         return True
 
-    def calculate_costs(self):
-        for i in range(self.number_of_dances):
-            for j in range(self.number_of_dances):
-                if i == j:
-                    self.cost_matrix[i][j] = 1_000_000
-                    continue
-                self.cost_matrix[i][j] = len(
-                    self.dances[i].dancers_set & self.dances[j].dancers_set
-                )
+    def calc_common_dancers(self, dance1, dance2):
+        return len(dance1.dancers_set & dance2.dancers_set)
+
+    def calc_cost(self, dance1, dance2):
+        if dance1 == dance2:
+            return 1_000_000
+        cost = 0
+        cost += self.calc_common_dancers(dance1, dance2)
+        return cost
+
+    def calc_cost_matrix(self):
+        for i, dance1 in enumerate(self.dances):
+            for j, dance2 in enumerate(self.dances):
+                self.cost_matrix[i][j] = self.calc_cost(dance1, dance2)
         pass
 
     def __str__(self):
         return "\n".join([str(dance) for dance in self.dances])
 
     def __getitem__(self, key):
-        return self.dances[key]
+        index = [dance.name for dance in self.dances].index(key)
+        return self.dances[index]
 
     def __len__(self):
         return len(self.dances)
