@@ -65,7 +65,8 @@ class Show:
         return "\n".join([str(dance) for dance in self.dances])
 
     def __getitem__(self, key):
-        return self.dances[key]
+        index = [dance.name for dance in self.dances].index(key)
+        return self.dances[index]
 
     def __len__(self):
         return len(self.dances)
