@@ -43,6 +43,24 @@ class Show:
     def is_possible(self, pos, dance):
         if dance.name in self.running_order[:pos] + self.running_order[pos + 1 :]:
             return False
+        if (
+            pos > 0
+            and self.running_order[pos - 1]
+            and self.cost_matrix[self.dances.index(dance)][
+                self.dances.index(self[self.running_order[pos - 1]])
+            ]
+            > 0
+        ):
+            return False
+        if (
+            pos < self.number_of_dances - 1
+            and self.running_order[pos + 1]
+            and self.cost_matrix[self.dances.index(dance)][
+                self.dances.index(self[self.running_order[pos + 1]])
+            ]
+            > 0
+        ):
+            return False
         return True
 
     def calc_common_dancers(self, dance1, dance2):
