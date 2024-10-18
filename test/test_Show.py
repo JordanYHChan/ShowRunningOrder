@@ -70,7 +70,11 @@ def test_Show_is_possible():
     assert show.is_possible(1, show["Ballet"]) is True
     assert show.is_possible(2, show["Ballet"]) is True
     assert show.is_possible(0, show["Contemporary"]) is True
+    assert show.is_possible(1, show["Contemporary"]) is True
+    assert show.is_possible(2, show["Contemporary"]) is True
     assert show.is_possible(0, show["Jazz"]) is True
+    assert show.is_possible(1, show["Jazz"]) is True
+    assert show.is_possible(2, show["Jazz"]) is True
     show.running_order = ["Ballet", None, None]
     assert show.is_possible(0, show["Ballet"]) is True
     assert show.is_possible(1, show["Ballet"]) is False
@@ -120,5 +124,57 @@ def test_Show_is_possible():
     assert show.is_possible(0, show["Jazz"]) is True
     assert show.is_possible(1, show["Jazz"]) is False
     assert show.is_possible(2, show["Jazz"]) is True
+    show.running_order = [None, None, None]
+    show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+
+def test_Show_order():
+    global show
+    assert show.order_dances() is True
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz"]
+    show.running_order = [None, None, None]
+    assert show.order_dances(0) is True
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz"]
+    show.running_order = [None, None, None]
+    assert show.order_dances(1) is True
+    assert show.running_order == ["Jazz", "Ballet", "Contemporary"]
+    show.running_order = [None, None, None]
+    assert show.order_dances(2) is True
+    assert show.running_order == ["Contemporary", "Jazz", "Ballet"]
+    show.running_order = [None, None, None]
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [[1_000_000, 0, 1], [0, 1_000_000, 0], [1, 0, 1_000_000]]
+    assert show.order_dances() is True
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz"]
+    show.running_order = [None, None, None]
+    assert show.order_dances(0) is True
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz"]
+    show.running_order = [None, None, None]
+    assert show.order_dances(1) is True
+    assert show.running_order == ["Jazz", "Contemporary", "Ballet"]
+    show.running_order = [None, None, None]
+    assert show.order_dances(2) is True
+    assert show.running_order == ["Jazz", "Contemporary", "Ballet"]
+    show.running_order = [None, "Contemporary", None]
+    assert show.order_dances() is True
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz"]
+    show.running_order = [None, "Contemporary", None]
+    assert show.order_dances(1) is True
+    assert show.running_order == ["Jazz", "Contemporary", "Ballet"]
+    show.running_order = [None, "Contemporary", None]
+    assert show.order_dances(2) is True
+    assert show.running_order == ["Jazz", "Contemporary", "Ballet"]
+    show.running_order = [None, "Ballet", None]
+    assert show.order_dances() is False
+    assert show.running_order == [None, "Ballet", None]
+    show.running_order = [None, "Jazz", None]
+    assert show.order_dances() is False
+    assert show.running_order == [None, "Jazz", None]
+    show.running_order = ["Contemporary", None, None]
+    assert show.order_dances() is False
+    assert show.running_order == ["Contemporary", None, None]
+    show.running_order = [None, None, "Contemporary"]
+    assert show.order_dances() is False
+    assert show.running_order == [None, None, "Contemporary"]
     show.running_order = [None, None, None]
     show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
