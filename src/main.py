@@ -12,4 +12,8 @@ if __name__ == "__main__":
 
     # create a Show object
     show = Show(dance_names, dancers_per_dance)
+
+    # order the dances
+    show.calc_cost_matrix()
+    show.order_dances()
     print(show)
