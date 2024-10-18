@@ -12,6 +12,7 @@ if __name__ == "__main__":
 
     # create a Show object
     show = Show(dance_names, dancers_per_dance)
+    show.add_intermission()
 
     # order the dances
     show.calc_cost_matrix()

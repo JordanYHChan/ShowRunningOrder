@@ -1,4 +1,4 @@
-from src.Show import Show
+from src.Show import Show, Dance
 
 dance_names = ["Ballet", "Contemporary", "Jazz"]
 dancers_per_dance = [
@@ -178,3 +178,120 @@ def test_Show_order():
     assert show.running_order == [None, None, "Contemporary"]
     show.running_order = [None, None, None]
     show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+
+def test_Show_add_dance():
+    global show
+    show.add_dance(Dance("Tap", ["Bob", "Charlie", "Ivy"]))
+    assert len(show) == 4
+    assert [str(dance) for dance in show] == [
+        "Ballet: Alice, Bob, Charlie",
+        "Contemporary: David, Eve, Frank",
+        "Jazz: Alice, Grace, Hannah",
+        "Tap: Bob, Charlie, Ivy",
+    ]
+    assert show["Tap"].name == "Tap"
+    assert show["Tap"].dancers == ["Bob", "Charlie", "Ivy"]
+    assert show["Tap"][0] == "Bob"
+    assert len(show["Tap"]) == 3
+    assert [dancer for dancer in show["Tap"]] == ["Bob", "Charlie", "Ivy"]
+    assert show.number_of_dances == 4
+    assert show.running_order == [None, None, None, None]
+    assert show.cost_matrix == [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [
+        [1_000_000, 0, 1, 2],
+        [0, 1_000_000, 0, 0],
+        [1, 0, 1_000_000, 0],
+        [2, 0, 0, 1_000_000],
+    ]
+    assert show.order_dances() is True
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz", "Tap"]
+    show.add_dance(Dance("Hip Hop", ["Bob", "David", "Ivy"]))
+    assert len(show) == 5
+    assert [str(dance) for dance in show] == [
+        "Ballet: Alice, Bob, Charlie",
+        "Contemporary: David, Eve, Frank",
+        "Hip Hop: Bob, David, Ivy",
+        "Jazz: Alice, Grace, Hannah",
+        "Tap: Bob, Charlie, Ivy",
+    ]
+    assert show["Hip Hop"].name == "Hip Hop"
+    assert show["Hip Hop"].dancers == ["Bob", "David", "Ivy"]
+    assert show["Hip Hop"][0] == "Bob"
+    assert len(show["Hip Hop"]) == 3
+    assert [dancer for dancer in show["Hip Hop"]] == ["Bob", "David", "Ivy"]
+    assert show.number_of_dances == 5
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz", "Tap", None]
+    assert show.cost_matrix == [
+        [1_000_000, 0, 0, 1, 2],
+        [0, 1_000_000, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [1, 0, 0, 1_000_000, 0],
+        [2, 0, 0, 0, 1_000_000],
+    ]
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [
+        [1_000_000, 0, 1, 1, 2],
+        [0, 1_000_000, 1, 0, 0],
+        [1, 1, 1_000_000, 0, 2],
+        [1, 0, 0, 1_000_000, 0],
+        [2, 0, 2, 0, 1_000_000],
+    ]
+    assert show.order_dances() is False
+    show.running_order = [None, None, None, None, None]
+    assert show.order_dances() is True
+    assert show.running_order == ["Ballet", "Contemporary", "Tap", "Jazz", "Hip Hop"]
+    show.running_order = [None, None, None, None, None]
+    show.cost_matrix = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+    ]
+
+
+def test_Show_add_intermission():
+    show.add_intermission()
+    assert len(show) == 6
+    assert [str(dance) for dance in show] == [
+        "Ballet: Alice, Bob, Charlie",
+        "Contemporary: David, Eve, Frank",
+        "Hip Hop: Bob, David, Ivy",
+        "Intermission: ",
+        "Jazz: Alice, Grace, Hannah",
+        "Tap: Bob, Charlie, Ivy",
+    ]
+    assert show["Intermission"].name == "Intermission"
+    assert show["Intermission"].dancers == []
+    assert len(show["Intermission"]) == 0
+    assert [dancer for dancer in show["Intermission"]] == []
+    assert show.number_of_dances == 6
+    assert show.running_order == [None, None, None, "Intermission", None, None]
+    assert show.cost_matrix == [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+    ]
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [
+        [1_000_000, 0, 1, 0, 1, 2],
+        [0, 1_000_000, 1, 0, 0, 0],
+        [1, 1, 1_000_000, 0, 0, 2],
+        [0, 0, 0, 1_000_000, 0, 0],
+        [1, 0, 0, 0, 1_000_000, 0],
+        [2, 0, 2, 0, 0, 1_000_000],
+    ]
+    assert show.order_dances() is True
+    assert show.running_order == [
+        "Ballet",
+        "Contemporary",
+        "Tap",
+        "Intermission",
+        "Hip Hop",
+        "Jazz",
+    ]

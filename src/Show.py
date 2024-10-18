@@ -94,6 +94,20 @@ class Show:
             self.running_order[pos] = None
         return False
 
+    def add_dance(self, dance):
+        self.dances.append(dance)
+        self.dances.sort(key=lambda dance: dance.name)
+        self.number_of_dances += 1
+        self.running_order.append(None)
+        index = self.dances.index(dance)
+        for row in self.cost_matrix:
+            row.insert(index, 0)
+        self.cost_matrix.insert(index, [0] * self.number_of_dances)
+
+    def add_intermission(self):
+        self.add_dance(Dance("Intermission", []))
+        self.running_order[self.number_of_dances // 2] = "Intermission"
+
     def __str__(self):
         if all(self.running_order):
             return "\n".join(
