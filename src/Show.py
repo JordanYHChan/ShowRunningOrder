@@ -104,6 +104,10 @@ class Show:
             row.insert(index, 0)
         self.cost_matrix.insert(index, [0] * self.number_of_dances)
 
+    def add_intermission(self):
+        self.add_dance(Dance("Intermission", []))
+        self.running_order[self.number_of_dances // 2] = "Intermission"
+
     def __str__(self):
         if all(self.running_order):
             return "\n".join(
