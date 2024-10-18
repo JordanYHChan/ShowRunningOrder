@@ -79,6 +79,21 @@ class Show:
                 self.cost_matrix[i][j] = self.calc_cost(dance1, dance2)
         pass
 
+    def order(self, pos=None):
+        if None not in self.running_order:
+            return True
+        if not pos or pos > self.number_of_dances - 1:
+            pos = 0
+        if self.running_order[pos]:
+            return self.order(pos + 1)
+        for dance in self.dances:
+            if self.is_possible(pos, dance):
+                self.running_order[pos] = dance.name
+                if self.order(pos + 1):
+                    return True
+            self.running_order[pos] = None
+        return False
+
     def __str__(self):
         return "\n".join([str(dance) for dance in self.dances])
 
