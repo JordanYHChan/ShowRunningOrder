@@ -8,6 +8,12 @@ def read(input_file):
     return dance_names, dancers_per_dance
 
 
+def write(output_file, show):
+    with open(output_file, "w") as file:
+        file.write(str(show))
+    pass
+
+
 class Dance:
     def __init__(self, name, dancers):
         self.name = name
@@ -110,10 +116,10 @@ class Show:
 
     def __str__(self):
         if all(self.running_order):
-            return "\n".join(
-                [str(dance) for dance in [self[dance] for dance in self.running_order]]
+            return ", ".join(
+                [dance.name for dance in [self[dance] for dance in self.running_order]]
             )
-        return "\n".join([str(dance) for dance in self.dances])
+        return ", ".join([dance.name for dance in self.dances])
 
     def __getitem__(self, key):
         index = [dance.name for dance in self.dances].index(key)

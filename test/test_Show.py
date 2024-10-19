@@ -12,10 +12,7 @@ def test_Show():
     global show
     show = Show(dance_names, dancers_per_dance)
     assert len(show) == 3
-    assert (
-        str(show)
-        == "Ballet: Alice, Bob, Charlie\nContemporary: David, Eve, Frank\nJazz: Alice, Grace, Hannah"
-    )
+    assert str(show) == "Ballet, Contemporary, Jazz"
     assert [str(dance) for dance in show] == [
         "Ballet: Alice, Bob, Charlie",
         "Contemporary: David, Eve, Frank",
@@ -183,6 +180,7 @@ def test_Show_order():
 def test_Show_add_dance():
     global show
     show.add_dance(Dance("Tap", ["Bob", "Charlie", "Ivy"]))
+    assert str(show) == "Ballet, Contemporary, Jazz, Tap"
     assert len(show) == 4
     assert [str(dance) for dance in show] == [
         "Ballet: Alice, Bob, Charlie",
@@ -208,6 +206,7 @@ def test_Show_add_dance():
     assert show.order_dances() is True
     assert show.running_order == ["Ballet", "Contemporary", "Jazz", "Tap"]
     show.add_dance(Dance("Hip Hop", ["Bob", "David", "Ivy"]))
+    assert str(show) == "Ballet, Contemporary, Hip Hop, Jazz, Tap"
     assert len(show) == 5
     assert [str(dance) for dance in show] == [
         "Ballet: Alice, Bob, Charlie",
@@ -254,6 +253,7 @@ def test_Show_add_dance():
 
 def test_Show_add_intermission():
     show.add_intermission()
+    assert str(show) == "Ballet, Contemporary, Hip Hop, Intermission, Jazz, Tap"
     assert len(show) == 6
     assert [str(dance) for dance in show] == [
         "Ballet: Alice, Bob, Charlie",
