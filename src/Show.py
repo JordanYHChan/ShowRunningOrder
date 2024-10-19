@@ -114,6 +114,11 @@ class Show:
         self.add_dance(Dance("Intermission", []))
         self.running_order[self.number_of_dances // 2] = "Intermission"
 
+    def set_position(self, pos, dance_name):
+        if dance_name and dance_name in self.running_order:
+            self.running_order[self.running_order.index(dance_name)] = None
+        self.running_order[pos] = dance_name
+
     def __str__(self):
         if all(self.running_order):
             return ", ".join(

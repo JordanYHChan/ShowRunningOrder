@@ -61,6 +61,23 @@ def test_Show_calc_cost_matrix():
     show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 
+def test_Show_set_position():
+    global show
+    assert show.running_order == [None, None, None]
+    show.set_position(0, "Ballet")
+    assert show.running_order == ["Ballet", None, None]
+    show.set_position(1, "Contemporary")
+    assert show.running_order == ["Ballet", "Contemporary", None]
+    show.set_position(2, "Jazz")
+    assert show.running_order == ["Ballet", "Contemporary", "Jazz"]
+    show.set_position(0, "Jazz")
+    assert show.running_order == ["Jazz", "Contemporary", None]
+    show.set_position(0, "Contemporary")
+    assert show.running_order == ["Contemporary", None, None]
+    show.set_position(0, None)
+    assert show.running_order == [None, None, None]
+
+
 def test_Show_is_possible():
     global show
     assert show.is_possible(0, show["Ballet"]) is True
