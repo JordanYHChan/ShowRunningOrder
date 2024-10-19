@@ -92,7 +92,7 @@ class Show:
             pos = 0
         if self.running_order[pos]:
             return self.order_dances(pos + 1)
-        for dance in self.dances:
+        for dance in sorted(self.dances, key=lambda dance: len(dance), reverse=True):
             if self.is_possible(pos, dance):
                 self.running_order[pos] = dance.name
                 if self.order_dances(pos + 1):
