@@ -11,10 +11,10 @@ if __name__ == "__main__":
     )
 
     # read the input file
-    dance_names, dancers_per_dance = read(input_file)
+    dance_names, dancers_per_dance, dance_styles = read(input_file)
 
     # create a Show object with an intermission
-    show = Show(dance_names, dancers_per_dance)
+    show = Show(dance_names, dancers_per_dance, dance_styles)
     print(show)
     show.add_intermission()
 

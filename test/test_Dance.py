@@ -10,3 +10,6 @@ def test_Dance():
     assert dance.dancers == ["Alice", "Bob", "Charlie"]
     assert dance.dancers_set == set(["Alice", "Bob", "Charlie"])
     assert dance.name == "Jazz"
+    assert dance.style is None
+    dance = Dance("Ballet", ["Alice", "Bob", "Charlie"], "Classical")
+    assert dance.style == "Classical"
