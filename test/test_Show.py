@@ -27,7 +27,27 @@ def test_Show():
     assert [dancer for dancer in show["Ballet"]] == ["Alice", "Bob", "Charlie"]
     assert show.number_of_dances == 3
     assert show.running_order == [None, None, None]
+    assert show.common_dancers is True
+    assert show.common_styles is True
     assert show.cost_matrix == [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+
+def test_Show_set_common_dancers():
+    global show
+    assert show.common_dancers is True
+    show.set_common_dancers(False)
+    assert show.common_dancers is False
+    show.set_common_dancers(True)
+    assert show.common_dancers is True
+
+
+def test_Show_set_common_styles():
+    global show
+    assert show.common_styles is True
+    show.set_common_styles(False)
+    assert show.common_styles is False
+    show.set_common_styles(True)
+    assert show.common_styles is True
 
 
 def test_Show_calc_common_dancers():
@@ -67,12 +87,53 @@ def test_Show_calc_cost():
     assert show.calc_cost(show["Modern Ballet"], show["Ballet"]) == 2
     assert show.calc_cost(show["Modern Ballet"], show["Contemporary"]) == 0
     assert show.calc_cost(show["Modern Ballet"], show["Modern Ballet"]) == 1_000_000
+    show.set_common_dancers(False)
+    assert show.calc_cost(show["Ballet"], show["Ballet"]) == 1_000_000
+    assert show.calc_cost(show["Ballet"], show["Contemporary"]) == 0
+    assert show.calc_cost(show["Ballet"], show["Modern Ballet"]) == 1
+    assert show.calc_cost(show["Contemporary"], show["Ballet"]) == 0
+    assert show.calc_cost(show["Contemporary"], show["Contemporary"]) == 1_000_000
+    assert show.calc_cost(show["Contemporary"], show["Modern Ballet"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Ballet"]) == 1
+    assert show.calc_cost(show["Modern Ballet"], show["Contemporary"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Modern Ballet"]) == 1_000_000
+    show.set_common_styles(False)
+    assert show.calc_cost(show["Ballet"], show["Ballet"]) == 1_000_000
+    assert show.calc_cost(show["Ballet"], show["Contemporary"]) == 0
+    assert show.calc_cost(show["Ballet"], show["Modern Ballet"]) == 0
+    assert show.calc_cost(show["Contemporary"], show["Ballet"]) == 0
+    assert show.calc_cost(show["Contemporary"], show["Contemporary"]) == 1_000_000
+    assert show.calc_cost(show["Contemporary"], show["Modern Ballet"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Ballet"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Contemporary"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Modern Ballet"]) == 1_000_000
+    show.set_common_dancers(True)
+    assert show.calc_cost(show["Ballet"], show["Ballet"]) == 1_000_000
+    assert show.calc_cost(show["Ballet"], show["Contemporary"]) == 0
+    assert show.calc_cost(show["Ballet"], show["Modern Ballet"]) == 1
+    assert show.calc_cost(show["Contemporary"], show["Ballet"]) == 0
+    assert show.calc_cost(show["Contemporary"], show["Contemporary"]) == 1_000_000
+    assert show.calc_cost(show["Contemporary"], show["Modern Ballet"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Ballet"]) == 1
+    assert show.calc_cost(show["Modern Ballet"], show["Contemporary"]) == 0
+    assert show.calc_cost(show["Modern Ballet"], show["Modern Ballet"]) == 1_000_000
+    show.set_common_styles(True)
 
 
 def test_Show_calc_cost_matrix():
     global show
     show.calc_cost_matrix()
     assert show.cost_matrix == [[1_000_000, 0, 2], [0, 1_000_000, 0], [2, 0, 1_000_000]]
+    show.set_common_dancers(False)
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [[1_000_000, 0, 1], [0, 1_000_000, 0], [1, 0, 1_000_000]]
+    show.set_common_styles(False)
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [[1_000_000, 0, 0], [0, 1_000_000, 0], [0, 0, 1_000_000]]
+    show.set_common_dancers(True)
+    show.calc_cost_matrix()
+    assert show.cost_matrix == [[1_000_000, 0, 1], [0, 1_000_000, 0], [1, 0, 1_000_000]]
+    show.set_common_styles(True)
     show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 

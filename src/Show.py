@@ -48,6 +48,8 @@ class Show:
         self.dances.sort(key=lambda dance: dance.name)
         self.number_of_dances = len(dance_names)
         self.running_order = [None] * self.number_of_dances
+        self.common_dancers = True
+        self.common_styles = True
         self.cost_matrix = [
             [0] * self.number_of_dances for _ in range(self.number_of_dances)
         ]
@@ -75,6 +77,12 @@ class Show:
             return False
         return True
 
+    def set_common_dancers(self, common_dancers):
+        self.common_dancers = common_dancers
+
+    def set_common_styles(self, common_styles):
+        self.common_styles = common_styles
+
     def calc_common_dancers(self, dance1, dance2):
         return len(dance1.dancers_set & dance2.dancers_set)
 
@@ -87,8 +95,10 @@ class Show:
         if dance1 == dance2:
             return 1_000_000
         cost = 0
-        cost += self.calc_common_dancers(dance1, dance2)
-        cost += self.calc_common_styles(dance1, dance2)
+        if self.common_dancers:
+            cost += self.calc_common_dancers(dance1, dance2)
+        if self.common_styles:
+            cost += self.calc_common_styles(dance1, dance2)
         return cost
 
     def calc_cost_matrix(self):

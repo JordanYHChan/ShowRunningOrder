@@ -13,10 +13,19 @@ if __name__ == "__main__":
     # read the input file
     dance_names, dancers_per_dance, dance_styles = read(input_file)
 
-    # create a Show object with an intermission
+    # create a Show object
     show = Show(dance_names, dancers_per_dance, dance_styles)
     print(show)
-    show.add_intermission()
+
+    # check if the user wants to add an intermission
+    while True:
+        intermission = input("Do you want to add an intermission (yes/no)? ")
+        if intermission == "yes":
+            show.add_intermission()
+            break
+        if intermission == "no":
+            break
+        print("Invalid option")
 
     # check if the user wants to position certain dances
     while True:
@@ -51,6 +60,25 @@ if __name__ == "__main__":
             print("Invalid position")
             continue
         show.set_position(position, dance_name)
+
+    # check what the user wants to consider when ordering the dances
+    while True:
+        common_dancers = input("Consider common dancers (yes/no)? ")
+        if common_dancers == "yes":
+            break
+        if common_dancers == "no":
+            show.set_common_dancers(False)
+            break
+        print("Invalid option")
+
+    while True:
+        common_styles = input("Consider common styles (yes/no)? ")
+        if common_styles == "yes":
+            break
+        if common_styles == "no":
+            show.set_common_styles(False)
+            break
+        print("Invalid option")
 
     # order the dances
     show.calc_cost_matrix()
