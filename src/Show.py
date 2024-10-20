@@ -54,29 +54,6 @@ class Show:
             [0] * self.number_of_dances for _ in range(self.number_of_dances)
         ]
 
-    def is_possible(self, pos, dance):
-        if dance.name in self.running_order[:pos] + self.running_order[pos + 1 :]:
-            return False
-        if (
-            pos > 0
-            and self.running_order[pos - 1]
-            and self.cost_matrix[self.dances.index(dance)][
-                self.dances.index(self[self.running_order[pos - 1]])
-            ]
-            > 0
-        ):
-            return False
-        if (
-            pos < self.number_of_dances - 1
-            and self.running_order[pos + 1]
-            and self.cost_matrix[self.dances.index(dance)][
-                self.dances.index(self[self.running_order[pos + 1]])
-            ]
-            > 0
-        ):
-            return False
-        return True
-
     def set_common_dancers(self, common_dancers):
         self.common_dancers = common_dancers
 
@@ -106,6 +83,37 @@ class Show:
             for j, dance2 in enumerate(self.dances):
                 self.cost_matrix[i][j] = self.calc_cost(dance1, dance2)
         pass
+
+    def create_neighbours(self):
+        self.neighbours = {}
+        for i, dance1 in enumerate(self.dances):
+            self.neighbours[dance1.name] = []
+            for j, dance2 in enumerate(self.dances):
+                if self.cost_matrix[i][j] == 0:
+                    self.neighbours[dance1.name].append(dance2.name)
+
+    def is_possible(self, pos, dance):
+        if dance.name in self.running_order[:pos] + self.running_order[pos + 1 :]:
+            return False
+        if (
+            pos > 0
+            and self.running_order[pos - 1]
+            and self.cost_matrix[self.dances.index(dance)][
+                self.dances.index(self[self.running_order[pos - 1]])
+            ]
+            > 0
+        ):
+            return False
+        if (
+            pos < self.number_of_dances - 1
+            and self.running_order[pos + 1]
+            and self.cost_matrix[self.dances.index(dance)][
+                self.dances.index(self[self.running_order[pos + 1]])
+            ]
+            > 0
+        ):
+            return False
+        return True
 
     def order_dances(self, pos=None):
         if None not in self.running_order:

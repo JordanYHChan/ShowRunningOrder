@@ -137,6 +137,24 @@ def test_Show_calc_cost_matrix():
     show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 
+def test_Show_create_neighbours():
+    global show
+    show.create_neighbours()
+    assert show.neighbours == {
+        "Ballet": ["Ballet", "Contemporary", "Modern Ballet"],
+        "Contemporary": ["Ballet", "Contemporary", "Modern Ballet"],
+        "Modern Ballet": ["Ballet", "Contemporary", "Modern Ballet"],
+    }
+    show.calc_cost_matrix()
+    show.create_neighbours()
+    assert show.neighbours == {
+        "Ballet": ["Contemporary"],
+        "Contemporary": ["Ballet", "Modern Ballet"],
+        "Modern Ballet": ["Contemporary"],
+    }
+    show.cost_matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+
+
 def test_Show_set_position():
     global show
     assert show.running_order == [None, None, None]
