@@ -5,7 +5,8 @@ def read(input_file):
         dancers_per_dance = [
             file.readline().strip().split(sep=", ") for _ in range(number_of_dances)
         ]
-    return dance_names, dancers_per_dance
+        dance_styles = file.readline().strip().split(sep=", ")
+    return dance_names, dancers_per_dance, dance_styles
 
 
 def write(output_file, show):
@@ -15,8 +16,9 @@ def write(output_file, show):
 
 
 class Dance:
-    def __init__(self, name, dancers):
+    def __init__(self, name, dancers, style=None):
         self.name = name
+        self.style = style
         self.dancers = sorted(dancers)
         self.dancers_set = set(self.dancers)
 
@@ -34,14 +36,20 @@ class Dance:
 
 
 class Show:
-    def __init__(self, dance_names, dancers_per_dance):
+    def __init__(self, dance_names, dancers_per_dance, dance_styles=None):
+        if not dance_styles:
+            dance_styles = [None] * len(dance_names)
         self.dances = [
-            Dance(dance_name, dancers)
-            for dance_name, dancers in zip(dance_names, dancers_per_dance)
+            Dance(dance_name, dancers, dance_style)
+            for dance_name, dancers, dance_style in zip(
+                dance_names, dancers_per_dance, dance_styles
+            )
         ]
         self.dances.sort(key=lambda dance: dance.name)
         self.number_of_dances = len(dance_names)
         self.running_order = [None] * self.number_of_dances
+        self.common_dancers = True
+        self.common_styles = True
         self.cost_matrix = [
             [0] * self.number_of_dances for _ in range(self.number_of_dances)
         ]
@@ -69,14 +77,28 @@ class Show:
             return False
         return True
 
+    def set_common_dancers(self, common_dancers):
+        self.common_dancers = common_dancers
+
+    def set_common_styles(self, common_styles):
+        self.common_styles = common_styles
+
     def calc_common_dancers(self, dance1, dance2):
         return len(dance1.dancers_set & dance2.dancers_set)
+
+    def calc_common_styles(self, dance1, dance2):
+        if dance1.style and dance2.style:
+            return int(dance1.style == dance2.style)
+        return 0
 
     def calc_cost(self, dance1, dance2):
         if dance1 == dance2:
             return 1_000_000
         cost = 0
-        cost += self.calc_common_dancers(dance1, dance2)
+        if self.common_dancers:
+            cost += self.calc_common_dancers(dance1, dance2)
+        if self.common_styles:
+            cost += self.calc_common_styles(dance1, dance2)
         return cost
 
     def calc_cost_matrix(self):
@@ -92,7 +114,7 @@ class Show:
             pos = 0
         if self.running_order[pos]:
             return self.order_dances(pos + 1)
-        for dance in self.dances:
+        for dance in sorted(self.dances, key=lambda dance: len(dance), reverse=True):
             if self.is_possible(pos, dance):
                 self.running_order[pos] = dance.name
                 if self.order_dances(pos + 1):
@@ -113,6 +135,11 @@ class Show:
     def add_intermission(self):
         self.add_dance(Dance("Intermission", []))
         self.running_order[self.number_of_dances // 2] = "Intermission"
+
+    def set_position(self, pos, dance_name):
+        if dance_name and dance_name in self.running_order:
+            self.running_order[self.running_order.index(dance_name)] = None
+        self.running_order[pos] = dance_name
 
     def __str__(self):
         if all(self.running_order):
