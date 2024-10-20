@@ -1,10 +1,7 @@
-# Output folder
+# Input and Output folder
 
+input/
 output/
-
-# Data folder
-
-data/
 
 # Python
 
