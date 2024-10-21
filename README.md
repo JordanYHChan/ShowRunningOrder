@@ -118,7 +118,12 @@ Ballet, Contemporary, Modern Ballet, Tap
 ```
 
 ## Documentation
-
+To read the documentation of the code, Doxygen is utilised inside the docs folder, where running the command:
+```bash
+$ cd docs
+$ doxygen
+```
+will auto-generate html and latex documentation of the code.
 
 ## Authors and acknowledgment
 Written by J. Y. H. Chan.
