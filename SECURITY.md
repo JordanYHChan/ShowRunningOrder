@@ -1,7 +1,7 @@
 # Security Policies and Procedures
 
-This document outlines security procedures and general policies for the `standard`
-project.
+This document outlines security procedures and general policies for the
+`ShowRunningOrder` project.
 
   * [Reporting a Bug](#reporting-a-bug)
   * [Disclosure Policy](#disclosure-policy)
@@ -9,10 +9,10 @@ project.
 
 ## Reporting a Bug
 
-The `standard` team and community take all security bugs in `standard` seriously.
-Thank you for improving the security of `standard`. We appreciate your efforts and
-responsible disclosure and will make every effort to acknowledge your
-contributions.
+The `ShowRunningOrder` team and community take all security bugs in
+`ShowRunningOrder` seriously. Thank you for improving the security of
+`ShowRunningOrder`. We appreciate your efforts and responsible disclosure
+and will make every effort to acknowledge your contributions.
 
 Report security bugs by emailing the lead maintainer at jordanyhchan@gmail.com.
 
