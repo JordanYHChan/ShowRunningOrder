@@ -3,6 +3,10 @@
 input/
 output/
 
+# Docs folder
+
+docs/
+
 # Python
 
 *__pycache__*
